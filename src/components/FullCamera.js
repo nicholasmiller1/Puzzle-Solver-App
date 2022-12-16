@@ -5,7 +5,7 @@ import CameraPreview from './CameraPreview';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 
-export default function FullCamera({isOpen, onClose, onSelect}) {
+export default function FullCamera({isOpen, onClose, selectRef}) {
   const [hasPermission, setHasPermission] = useState(null);
   const [capturedImage, setCapturedImage] = useState(null);
   const cameraRef = useRef(null);
@@ -36,18 +36,17 @@ export default function FullCamera({isOpen, onClose, onSelect}) {
     }
   }
 
-  const onRetake = () => {
-    setCapturedImage(null);
-  }
-
   return (
     <Modal visible={isOpen} animationType='slide' transparent>
       <View style={styles.container}>
         {capturedImage ? (
           <CameraPreview
             photo={capturedImage}
-            onRetake={onRetake}
-            onSelect={onSelect}
+            onRetake={() => setCapturedImage(null)}
+            onSelect={() => {
+              selectRef.current = capturedImage;
+              onClose();
+            }}
           />
         ) : (
           <Camera

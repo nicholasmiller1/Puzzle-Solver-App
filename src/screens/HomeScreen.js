@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { StyleSheet, Text, View, Pressable } from 'react-native';
 import FullCamera from '../components/FullCamera';
 
 export default function HomeScreen({ navigation }) {
   const [cameraOpen, setCameraOpen] = useState(false);
+  const selectedPhoto = useRef(null);
 
   return (
     <View style={styles.container}>
@@ -16,7 +17,7 @@ export default function HomeScreen({ navigation }) {
       <FullCamera
         isOpen={cameraOpen}
         onClose={() => setCameraOpen(!cameraOpen)}
-        onSelect={() => console.log('photo selected')}
+        selectRef={selectedPhoto}
       />
     </View>
   );
